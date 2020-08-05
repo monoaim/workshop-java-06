@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.ArrayList;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,13 +25,18 @@ public class UserController {
 
     @GetMapping("/users/{id}")
     public UsersResponse getUserById(@PathVariable int id) {
-        return new UsersResponse(id, String.format("User %d", id));
+        return new UsersResponse(id, String.format("User %d", id), 30);
+    }
+
+    @PostMapping("/users")
+    public UsersResponse createNewUser(@RequestBody NewUserRequest request) {
+        return new UsersResponse(0, request.getName(), request.getAge());
     }
 
     private List<UsersResponse> getSampleUsers(int num) {
         List<UsersResponse> ur = new ArrayList<>();
         for (int i = 1; i < num + 1; i++) {
-            ur.add(new UsersResponse(i, "User " + i));
+            ur.add(new UsersResponse(i, "User " + i, 30));
         }
         return ur;
     }
